@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#246b45">
+  <meta name="description" content="Browse the menu and order food at SIT Canteen.">
+  <title>SIT Canteen | Fresh food, easy ordering</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="SIT Canteen home">
+      <span class="brand-icon">S</span>
+      <span>SIT <span class="brand-light">Canteen</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+    </nav>
+    <button class="cart-button" id="open-cart" aria-label="Open shopping cart">
+      <span>Cart</span>
+      <span class="cart-count" id="cart-count">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="status-dot"></span> YOUR CAMPUS, YOUR CANTEEN</span>
+        <h1>Good food.<br>Good mood.</h1>
+        <p>Your campus favourites, just a few clicks away. Pick your food, place your order, and collect it at the counter.</p>
+        <a class="primary-button hero-button" href="#menu">Explore the menu <span>→</span></a>
+        <div class="hero-notes">
+          <span>✓ Simple ordering</span>
+          <span>✓ Student-friendly prices</span>
+        </div>
+      </div>
+      <div class="hero-art" role="img" aria-label="A delicious meal ready to enjoy">
+        <div class="hero-image"></div>
+        <div class="hero-sticker"><span>Made for</span><strong>campus life ✳</strong></div>
+      </div>
+    </section>
+
+    <section class="menu-section" id="menu">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">WHAT ARE YOU CRAVING?</span>
+          <h2>Today's menu</h2>
+          <p class="muted">Fresh picks for your next break.</p>
+        </div>
+        <span class="menu-note">Prices in Indian rupees (₹)</span>
+      </div>
+
+      <div class="search-row">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="search-input" type="search" placeholder="Search for dosa, chai, sandwich..." autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <label class="sort-control">
+          <span class="sr-only">Sort menu</span>
+          <select id="sort-select">
+            <option value="popular">Popular first</option>
+            <option value="low">Price: low to high</option>
+            <option value="high">Price: high to low</option>
+            <option value="az">Name: A to Z</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="category-list" id="category-list" aria-label="Filter food by category">
+        <button class="category-chip active" data-category="All">All items</button>
+        <button class="category-chip" data-category="Snacks">Snacks</button>
+        <button class="category-chip" data-category="Meals">Meals</button>
+        <button class="category-chip" data-category="Fast Food">Fast food</button>
+        <button class="category-chip" data-category="Drinks">Drinks</button>
+      </div>
+
+      <div class="results-line">
+        <span id="results-count">Loading menu...</span>
+        <button class="text-button" id="clear-filters">Clear filters</button>
+      </div>
+
+      <div class="food-grid" id="food-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="pickup-banner" id="about">
+      <div class="pickup-icon">☕</div>
+      <div>
+        <span class="eyebrow">YOUR BREAK, MADE BETTER</span>
+        <h2>Order now. Pick up at the counter.</h2>
+        <p>No online payment needed. Pay when you collect your food.</p>
+      </div>
+      <a class="secondary-button" href="#menu">Browse food →</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a class="brand footer-brand" href="#"><span class="brand-icon">S</span><span>SIT <span class="brand-light">Canteen</span></span></a>
+    <p>Made for campus life. <span id="footer-year"></span></p>
+    <a href="#menu">Back to menu ↑</a>
+  </footer>
+
+  <!-- Cart drawer -->
+  <div class="overlay" id="cart-overlay" hidden>
+    <button class="overlay-backdrop" data-close-cart aria-label="Close cart"></button>
+    <aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+      <div class="drawer-header">
+        <div>
+          <span class="eyebrow">YOUR SELECTION</span>
+          <h2 id="cart-title">Your cart</h2>
+        </div>
+        <button class="icon-button" data-close-cart aria-label="Close cart">✕</button>
+      </div>
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-empty" id="cart-empty">
+        <div class="empty-icon">🛍</div>
+        <h3>Your cart is empty</h3>
+        <p>Find something tasty on the menu.</p>
+        <button class="primary-button" data-close-cart>Explore menu</button>
+      </div>
+      <div class="cart-summary" id="cart-summary">
+        <div class="total-row"><span>Subtotal</span><strong id="cart-subtotal">₹0</strong></div>
+        <div class="total-row"><span>Pickup fee</span><strong>₹0</strong></div>
+        <div class="total-row grand-total"><span>Total</span><strong id="cart-total">₹0</strong></div>
+        <p class="payment-note">♡ Pay at the canteen counter</p>
+        <button class="primary-button checkout-button" id="checkout-button">Proceed to checkout →</button>
+        <p class="fine-print">Your order is a local demo and is not sent to canteen staff.</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Checkout dialog -->
+  <div class="modal-overlay" id="checkout-overlay" hidden>
+    <section class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+      <div class="drawer-header">
+        <div>
+          <span class="eyebrow">ALMOST THERE</span>
+          <h2 id="checkout-title">Checkout</h2>
+        </div>
+        <button class="icon-button" id="close-checkout" aria-label="Close checkout">✕</button>
+      </div>
+      <form id="checkout-form">
+        <label class="field-label" for="customer-name">Your name</label>
+        <input class="form-input" id="customer-name" name="customerName" required maxlength="70" autocomplete="name" placeholder="Enter your name">
+
+        <label class="field-label" for="student-id">Student ID <span class="optional">(optional)</span></label>
+        <input class="form-input" id="student-id" name="studentId" maxlength="30" placeholder="e.g. SIT12345">
+
+        <label class="field-label" for="pickup-time">Pickup time</label>
+        <select class="form-input" id="pickup-time" name="pickupTime" required>
+          <option value="As soon as possible">As soon as possible</option>
+          <option value="In 15 minutes">In 15 minutes</option>
+          <option value="In 30 minutes">In 30 minutes</option>
+        </select>
+
+        <div class="checkout-total">
+          <span>Amount to pay at counter</span>
+          <strong id="checkout-total">₹0</strong>
+        </div>
+        <button class="primary-button checkout-button" type="submit">Place demo order ✓</button>
+        <p class="fine-print">Demo only: no real payment or staff notification occurs.</p>
+      </form>
+    </section>
+  </div>
+
+  <!-- Order confirmation -->
+  <div class="modal-overlay" id="success-overlay" hidden>
+    <section class="checkout-modal success-modal" role="dialog" aria-modal="true" aria-labelledby="success-title">
+      <div class="success-mark">✓</div>
+      <span class="eyebrow">ORDER CREATED ON THIS DEVICE</span>
+      <h2 id="success-title">Thanks for your order!</h2>
+      <p class="muted">Your demo order has been recorded in this browser.</p>
+      <div class="order-ticket">
+        <span>Demo order number</span>
+        <strong id="order-number"></strong>
+        <div class="total-row"><span>Customer</span><strong id="order-customer"></strong></div>
+        <div class="total-row"><span>Pickup</span><strong id="order-pickup"></strong></div>
+        <div class="total-row"><span>Pay at counter</span><strong id="order-amount"></strong></div>
+      </div>
+      <button class="primary-button checkout-button" id="finish-order">Back to menu</button>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
